@@ -6,11 +6,19 @@ const Schema = mongoose.Schema;
 const user = new Schema({
   email: {
     type: String,
-    require: [true, "Set name for contact"],
+    required: [true, "Please set email"],
     minLength: 2,
   },
-  password: { type: String, require: [true], minLength: 2 },
-  userName: { type: String, require: [true], minLength: 2 },
+  password: {
+    type: String,
+    required: [true, "Please set password"],
+    minLength: 2,
+  },
+  userName: {
+    type: String,
+    required: [true, "Please set Username"],
+    minLength: 2,
+  },
   token: {
     type: String,
     default: null,

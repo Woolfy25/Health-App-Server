@@ -24,8 +24,8 @@ router.get("/account/current", auth, getCurrentUser);
 router.get("/account/logout", auth, logOutAccount);
 router.post("/account/register", createAccount);
 router.post("/account/login", loginAccount);
-router.put("/account/:contactId", auth, updateAccount);
-router.delete("/account/:contactId", auth, removeAccount);
+router.put("/account/:contactId", auth, updateAccount); // extra (not used)
+router.delete("/account/:contactId", auth, removeAccount); // extra (not used)
 
 router.get("/elements", auth, getContacts);
 router.post("/elements", auth, createContacts);

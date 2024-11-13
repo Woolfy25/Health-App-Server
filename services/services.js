@@ -1,4 +1,4 @@
-const User = require("./schemas/Users"); // edit name
+const User = require("./schemas/Users");
 // const Contacts = require("./schemas/Contacts");
 const jwt = require("jsonwebtoken");
 const nanoid = require("nanoid");
@@ -44,7 +44,7 @@ const createAccount = async ({ email, userName, password }) => {
       from: "ramonspuci@gmail.com",
       to: "ramonciutre7@gmail.com",
       subject: "Email de verificare cont",
-      text: `Codul tau de verificare este ${codUnicDeVerificare}, http://localhost:3000/api/account/verify/${codUnicDeVerificare}`,
+      text: `Codul tau de verificare este ${codUnicDeVerificare}, http://localhost:3000/health/account/verify/${codUnicDeVerificare}`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -91,9 +91,13 @@ const checkUserDB = async ({ email, password }) => {
       throw new Error("Trebuie sa iti verifici contul!");
     }
 
-    const token = jwt.sign({ _id: user._id, email: user.email }, secret, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { _id: user._id, email: user.email, userName: user.userName },
+      secret,
+      {
+        expiresIn: "1h",
+      }
+    );
     user.token = token;
 
     return await user.save();
@@ -224,7 +228,7 @@ const verifyEmailResend = async (email) => {
       from: "ramonspuci@gmail.com",
       to: "ramonciutre7@gmail.com",
       subject: "Email de verificare cont",
-      text: `Codul tau de verificare este ${codUnicDeVerificare}, http://localhost:3000/api/account/verify/${codUnicDeVerificare}`,
+      text: `Codul tau de verificare este ${codUnicDeVerificare}, http://localhost:3000/health/account/verify/${codUnicDeVerificare}`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
