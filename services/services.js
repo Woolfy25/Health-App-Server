@@ -8,6 +8,7 @@ require("dotenv").config();
 const secret = process.env.SECRET;
 const pass = process.env.PASS;
 
+// Done
 const logOutAccount = async (userId) => {
   try {
     const user = await User.findById(userId);
@@ -23,7 +24,8 @@ const logOutAccount = async (userId) => {
   }
 };
 
-const createAccount = async ({ email, userName, password }) => {
+// Done
+const createAccount = async ({ email, name, password }) => {
   try {
     const userExistent = await User.findOne({ email });
     if (userExistent) {
@@ -42,8 +44,8 @@ const createAccount = async ({ email, userName, password }) => {
 
     const mailOptions = {
       from: "ramonspuci@gmail.com",
-      to: "ramonciutre7@gmail.com",
-      subject: "Email de verificare cont",
+      to: `${email}`,
+      subject: "Email de verificare cont Slim Mom",
       text: `Codul tau de verificare este ${codUnicDeVerificare}, http://localhost:3000/health/account/verify/${codUnicDeVerificare}`,
     };
 
@@ -56,7 +58,7 @@ const createAccount = async ({ email, userName, password }) => {
 
     const newUser = User({
       email,
-      userName,
+      name,
       verificationToken: codUnicDeVerificare,
     });
     newUser.setPassword(password);
@@ -67,7 +69,7 @@ const createAccount = async ({ email, userName, password }) => {
       {
         _id: savedUser._id,
         email: savedUser.email,
-        userName: savedUser.userName,
+        name: savedUser.name,
       },
       secret,
       { expiresIn: "1h" }
@@ -80,6 +82,7 @@ const createAccount = async ({ email, userName, password }) => {
   }
 };
 
+// Done
 const checkUserDB = async ({ email, password }) => {
   try {
     const user = await User.findOne({ email });
@@ -92,7 +95,7 @@ const checkUserDB = async ({ email, password }) => {
     }
 
     const token = jwt.sign(
-      { _id: user._id, email: user.email, userName: user.userName },
+      { _id: user._id, email: user.email, name: user.name },
       secret,
       {
         expiresIn: "1h",
@@ -106,10 +109,11 @@ const checkUserDB = async ({ email, password }) => {
   }
 };
 
-const updateAccount = async (contactId, updatedData) => {
+// Done
+const updateAccount = async (accountId, updatedData) => {
   try {
-    return User.findByIdAndUpdate(
-      { _id: contactId },
+    return await User.findByIdAndUpdate(
+      accountId,
       { $set: updatedData },
       { new: true }
     );
@@ -118,9 +122,10 @@ const updateAccount = async (contactId, updatedData) => {
   }
 };
 
-const deleteAccount = async (contactId) => {
+// Done
+const deleteAccount = async (accountId) => {
   try {
-    return User.deleteOne({ _id: contactId });
+    return User.deleteOne({ _id: accountId });
   } catch (error) {
     throw error;
   }
@@ -152,9 +157,11 @@ const addContact = async ({ name, email, phone, ownerId }) => {
 
 const updateContact = async (contactId, updatedData, ownerId) => {
   try {
+    update = { ...updatedData };
+    console.log(update);
     const updatedContact = await Contacts.findOneAndUpdate(
       { _id: contactId, owner: ownerId },
-      { $set: updatedData },
+      { $set: update },
       { new: true }
     );
 
@@ -189,6 +196,7 @@ const deleteContact = async (contactId, ownerId) => {
   }
 };
 
+// Done
 const verifyEmailAddress = async (verificationToken) => {
   try {
     const update = { verify: true, verificationToken: null };
@@ -226,8 +234,8 @@ const verifyEmailResend = async (email) => {
 
     const mailOptions = {
       from: "ramonspuci@gmail.com",
-      to: "ramonciutre7@gmail.com",
-      subject: "Email de verificare cont",
+      to: `${email}`,
+      subject: "Email de verificare cont Slim Mom",
       text: `Codul tau de verificare este ${codUnicDeVerificare}, http://localhost:3000/health/account/verify/${codUnicDeVerificare}`,
     };
 

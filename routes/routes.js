@@ -17,19 +17,20 @@ const {
 
 const { auth } = require("../middlewares/auth");
 
-router.get("/account/verify/:verificationToken", verifyEmail);
-router.post("/account/verify/", verifyResend);
+router.get("/account/verify/:verificationToken", verifyEmail); // Done
+router.post("/account/verify/", verifyResend); // Done
 
-router.get("/account/current", auth, getCurrentUser);
-router.get("/account/logout", auth, logOutAccount);
-router.post("/account/register", createAccount);
-router.post("/account/login", loginAccount);
-router.put("/account/:contactId", auth, updateAccount); // extra (not used)
-router.delete("/account/:contactId", auth, removeAccount); // extra (not used)
+router.get("/account/current", auth, getCurrentUser); // Done
+router.get("/account/logout", auth, logOutAccount); //Done
+router.post("/account/register", createAccount); // Done
+router.post("/account/login", loginAccount); // Done
+router.patch("/account/:accountId", auth, updateAccount); // Done
 
-router.get("/elements", auth, getContacts);
-router.post("/elements", auth, createContacts);
-router.put("/elements/:contactId", auth, updateContacts);
-router.delete("/elements/:contactId", auth, removeContact);
+router.get("/meals", auth, getContacts);
+router.post("/meals", auth, createContacts);
+router.delete("/meals/:mealId", auth, removeContact);
+
+router.delete("/account/:accountId", auth, removeAccount); // extra (not used) Done
+router.put("/meals/:mealId", auth, updateContacts); // extra (not used)
 
 module.exports = router;

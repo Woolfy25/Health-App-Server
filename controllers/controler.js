@@ -1,13 +1,14 @@
 const services = require("../services/services");
 require("dotenv").config();
 
+//Done
 const getCurrentUser = async (req, res, next) => {
   try {
-    const { email, userName } = req.user;
+    const { email, name, height, calories, age, bloodType } = req.user;
     res.status(200).json({
       status: "Succes",
       code: 200,
-      data: { email, userName },
+      data: { email, name, height, calories, age, bloodType },
     });
   } catch (error) {
     res.status(404).json({
@@ -17,6 +18,7 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
+//Done
 const logOutAccount = async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -33,22 +35,23 @@ const logOutAccount = async (req, res, next) => {
   }
 };
 
+// Done
 const createAccount = async (req, res, next) => {
   try {
-    const { email, password, userName } = req.body;
+    const { email, password, name } = req.body;
     const result = await services.createAccount({
       email,
       password,
-      userName,
+      name,
     });
 
     res.status(201).json({
       status: "Succes",
       code: 201,
       data: {
+        name: result.name,
         email: result.email,
         token: result.token,
-        userName: result.userName,
       },
     });
   } catch (error) {
@@ -59,6 +62,7 @@ const createAccount = async (req, res, next) => {
   }
 };
 
+// Done
 const loginAccount = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -70,7 +74,7 @@ const loginAccount = async (req, res, next) => {
     res.status(201).json({
       status: "Succes",
       code: 201,
-      data: { email: result.email, token: result.token },
+      data: { name: result.name, email: result.email, token: result.token },
     });
   } catch (error) {
     res.status(404).json({
@@ -80,15 +84,24 @@ const loginAccount = async (req, res, next) => {
   }
 };
 
+// Done
 const updateAccount = async (req, res, next) => {
   try {
-    const { contactId } = req.params;
-    const updateData = req.body;
-    const result = await services.updateAccount(contactId, updateData);
+    const { accountId } = req.params;
+    const updatedData = req.body;
+    const result = await services.updateAccount(accountId, updatedData);
     res.status(201).json({
       status: "Succes",
       code: 201,
-      data: result,
+
+      data: {
+        name: result.name,
+        email: result.email,
+        height: result.height,
+        calories: result.calories,
+        age: result.age,
+        bloodType: result.bloodType,
+      },
     });
   } catch (error) {
     res.status(404).json({
@@ -98,10 +111,11 @@ const updateAccount = async (req, res, next) => {
   }
 };
 
+// Done
 const removeAccount = async (req, res, next) => {
   try {
-    const { contactId } = req.params;
-    await services.deleteAccount(contactId);
+    const { accountId } = req.params;
+    await services.deleteAccount(accountId);
     res.status(204).json({
       status: "Succes",
       code: 204,
@@ -182,6 +196,7 @@ const removeContact = async (req, res, next) => {
   }
 };
 
+// Done
 const verifyEmail = async (req, res, next) => {
   try {
     const { verificationToken } = req.params;
@@ -199,6 +214,7 @@ const verifyEmail = async (req, res, next) => {
   }
 };
 
+// Done
 const verifyResend = async (req, res, next) => {
   try {
     const { email } = req.body;

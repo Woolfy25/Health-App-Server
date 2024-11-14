@@ -14,10 +14,26 @@ const user = new Schema({
     required: [true, "Please set password"],
     minLength: 2,
   },
-  userName: {
+  name: {
     type: String,
     required: [true, "Please set Username"],
     minLength: 2,
+  },
+  calories: {
+    type: Number,
+    default: null,
+  },
+  height: {
+    type: Number,
+    default: null,
+  },
+  age: {
+    type: Number,
+    default: null,
+  },
+  bloodType: {
+    type: String,
+    default: null,
   },
   token: {
     type: String,
