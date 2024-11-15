@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("./schemas/Users");
-// const Contacts = require("./schemas/Contacts");
+const Meals = require("./schemas/Meals");
 const jwt = require("jsonwebtoken");
 const nanoid = require("nanoid");
 const nodemailer = require("nodemailer");
@@ -30,10 +30,10 @@ const createAccount = async ({ email, name, password }) => {
   try {
     const userExistent = await User.findOne({ email });
     if (userExistent) {
-      throw new Error("Acest email exista deja!");
+      throw new Error("This email already exists!");
     }
 
-    const codUnicDeVerificare = nanoid();
+    const uniqueValidationCode = nanoid(); // uniqueValidationCode
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -46,8 +46,8 @@ const createAccount = async ({ email, name, password }) => {
     const mailOptions = {
       from: "ramonspuci@gmail.com",
       to: `${email}`,
-      subject: "Email de verificare cont Slim Mom",
-      text: `Codul tau de verificare este ${codUnicDeVerificare}, http://localhost:3000/health/account/verify/${codUnicDeVerificare}`,
+      subject: "Verification email Slim Mom account.",
+      text: `Your account verification code is: ${uniqueValidationCode}, http://localhost:3000/health/account/verify/${uniqueValidationCode}`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -60,7 +60,7 @@ const createAccount = async ({ email, name, password }) => {
     const newUser = User({
       email,
       name,
-      verificationToken: codUnicDeVerificare,
+      verificationToken: uniqueValidationCode,
     });
     newUser.setPassword(password);
 
@@ -88,11 +88,11 @@ const checkUserDB = async ({ email, password }) => {
   try {
     const user = await User.findOne({ email });
     if (!user || !user.validPassword(password)) {
-      throw new Error("Email sau parola gresita!");
+      throw new Error("Email or password is wrong!");
     }
 
     if (!user.verify) {
-      throw new Error("Trebuie sa iti verifici contul!");
+      throw new Error("You have to verify your account first!");
     }
 
     const token = jwt.sign(
@@ -143,34 +143,38 @@ const deleteAccount = async (accountId) => {
   }
 };
 
-const getAllContacts = async (ownerId) => {
+// * Done
+const getAllMeals = async (ownerId) => {
   try {
-    return Contacts.find({ owner: ownerId });
+    return Meals.find({ owner: ownerId });
   } catch (error) {
     throw error;
   }
 };
 
-const addContact = async ({ name, email, phone, ownerId }) => {
+// * Done
+const addMeals = async ({ product, weight, calories, date, ownerId }) => {
   try {
-    const contact = new Contacts({
-      name,
-      email,
-      phone,
+    const meals = new Meals({
+      product,
+      weight,
+      calories,
+      date,
       owner: ownerId,
     });
-    await contact.save();
+    await meals.save();
 
-    return contact;
+    return meals;
   } catch (error) {
     throw error;
   }
 };
 
-const deleteContact = async (contactId, ownerId) => {
+// * Done
+const deleteMeal = async (mealId, ownerId) => {
   try {
-    const deletedContact = await Contacts.deleteOne({
-      _id: contactId,
+    const deletedContact = await Meals.deleteOne({
+      _id: mealId,
       owner: ownerId,
     });
 
@@ -199,7 +203,7 @@ const verifyEmailAddress = async (verificationToken) => {
       { new: true }
     );
 
-    if (!result) throw new Error("Userul nu exista!");
+    if (!result) throw new Error("User does not exist!");
   } catch (error) {
     throw error;
   }
@@ -209,11 +213,11 @@ const verifyEmailAddress = async (verificationToken) => {
 const verifyEmailResend = async (email) => {
   try {
     const user = await User.findOne({ email });
-    if (!user) throw new Error("Userul nu exista!");
+    if (!user) throw new Error("User does not exist!");
     if (user.verify === true)
       throw new Error("Verification has already been passed!");
 
-    const codUnicDeVerificare = user.verificationToken;
+    const uniqueValidationCode = user.verificationToken;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -226,8 +230,8 @@ const verifyEmailResend = async (email) => {
     const mailOptions = {
       from: "ramonspuci@gmail.com",
       to: `${email}`,
-      subject: "Email de verificare cont Slim Mom",
-      text: `Codul tau de verificare este ${codUnicDeVerificare}, http://localhost:3000/health/account/verify/${codUnicDeVerificare}`,
+      subject: "Verification email Slim Mom account",
+      text: `Your account verification code is ${uniqueValidationCode}, http://localhost:3000/health/account/verify/${uniqueValidationCode}`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {

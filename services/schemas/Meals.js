@@ -15,10 +15,11 @@ const meals = new Schema({
   },
   calories: {
     type: Number,
+    required: [true, "Please set the product calorie!"],
     minLength: 2,
   },
   date: {
-    type: Date,
+    type: String,
     required: [true, "Please set the product date!"],
   },
   owner: {

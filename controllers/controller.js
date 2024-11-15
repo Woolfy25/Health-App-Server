@@ -145,10 +145,11 @@ const removeAccount = async (req, res, next) => {
   }
 };
 
-const getContacts = async (req, res, next) => {
+// * Done
+const getMeals = async (req, res, next) => {
   try {
     const ownerId = req.user._id;
-    const result = await services.getAllContacts(ownerId);
+    const result = await services.getAllMeals(ownerId);
     res.json({
       status: "Success",
       code: 201,
@@ -162,11 +163,18 @@ const getContacts = async (req, res, next) => {
   }
 };
 
-const createContacts = async (req, res, next) => {
+// * Done
+const createMeals = async (req, res, next) => {
   try {
-    const { name, email, phone } = req.body;
+    const { product, weight, calories, date } = req.body;
     ownerId = req.user._id;
-    const result = await services.addContact({ name, email, phone, ownerId });
+    const result = await services.addMeals({
+      product,
+      weight,
+      calories,
+      date,
+      ownerId,
+    });
     res.json({
       status: "Success",
       code: 201,
@@ -180,11 +188,12 @@ const createContacts = async (req, res, next) => {
   }
 };
 
-const removeContact = async (req, res, next) => {
+// * Done
+const removeMeal = async (req, res, next) => {
   try {
     ownerId = req.user._id;
-    const { contactId } = req.params;
-    await services.deleteContact(contactId, ownerId);
+    const { mealId } = req.params;
+    await services.deleteMeal(mealId, ownerId);
     res.status(204).json();
   } catch (error) {
     res.status(404).json({
@@ -201,7 +210,7 @@ const verifyEmail = async (req, res, next) => {
 
     await services.verifyEmailAddress(verificationToken);
     res.status(200).json({
-      message: "Email verificat cu success!",
+      message: "Email verified successfully!",
       code: 200,
     });
   } catch (error) {

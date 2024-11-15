@@ -28,9 +28,9 @@ router.patch("/account/:accountId", auth, updateAccount); //  * Done
 
 router.get("/ingredients", auth, getIngredients); // * Done
 
-router.get("/meals", auth, getMeals); // TODO To Do
-router.post("/meals", auth, createMeals); // TODO To Do
-router.delete("/meals/:mealId", auth, removeMeal); // TODO To Do
+router.get("/meals", auth, getMeals); // * Done
+router.post("/meals", auth, createMeals); // * Done
+router.delete("/meals/:mealId", auth, removeMeal); // * Done
 
 router.delete("/account/:accountId", auth, removeAccount); // ! extra (not used) Done
 
