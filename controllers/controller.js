@@ -1,12 +1,12 @@
 const services = require("../services/services");
 require("dotenv").config();
 
-//Done
+// Done
 const getCurrentUser = async (req, res, next) => {
   try {
     const { email, name, height, calories, age, bloodType } = req.user;
     res.status(200).json({
-      status: "Succes",
+      status: "Success",
       code: 200,
       data: { email, name, height, calories, age, bloodType },
     });
@@ -18,13 +18,13 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
-//Done
+// Done
 const logOutAccount = async (req, res, next) => {
   try {
     const userId = req.user._id;
     await services.logOutAccount(userId);
     res.status(204).json({
-      status: "Succes",
+      status: "Success",
       code: 204,
     });
   } catch (error) {
@@ -46,7 +46,7 @@ const createAccount = async (req, res, next) => {
     });
 
     res.status(201).json({
-      status: "Succes",
+      status: "Success",
       code: 201,
       data: {
         name: result.name,
@@ -72,7 +72,7 @@ const loginAccount = async (req, res, next) => {
     });
 
     res.status(201).json({
-      status: "Succes",
+      status: "Success",
       code: 201,
       data: { name: result.name, email: result.email, token: result.token },
     });
@@ -91,7 +91,7 @@ const updateAccount = async (req, res, next) => {
     const updatedData = req.body;
     const result = await services.updateAccount(accountId, updatedData);
     res.status(201).json({
-      status: "Succes",
+      status: "Success",
       code: 201,
 
       data: {
@@ -117,7 +117,7 @@ const removeAccount = async (req, res, next) => {
     const { accountId } = req.params;
     await services.deleteAccount(accountId);
     res.status(204).json({
-      status: "Succes",
+      status: "Success",
       code: 204,
     });
   } catch (error) {
@@ -133,7 +133,7 @@ const getContacts = async (req, res, next) => {
     const ownerId = req.user._id;
     const result = await services.getAllContacts(ownerId);
     res.json({
-      status: "Succes",
+      status: "Success",
       code: 201,
       data: result,
     });
@@ -151,7 +151,7 @@ const createContacts = async (req, res, next) => {
     ownerId = req.user._id;
     const result = await services.addContact({ name, email, phone, ownerId });
     res.json({
-      status: "Succes",
+      status: "Success",
       code: 201,
       data: result,
     });
@@ -170,7 +170,7 @@ const updateContacts = async (req, res, next) => {
     const updateData = req.body;
     const result = await services.updateContact(contactId, updateData, ownerId);
     res.status(201).json({
-      status: "Succes",
+      status: "Success",
       code: 201,
       data: result,
     });

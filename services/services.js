@@ -29,7 +29,7 @@ const createAccount = async ({ email, name, password }) => {
   try {
     const userExistent = await User.findOne({ email });
     if (userExistent) {
-      throw new Error("Aceste email exista deja!");
+      throw new Error("Acest email exista deja!");
     }
 
     const codUnicDeVerificare = nanoid();
