@@ -1,7 +1,7 @@
 const services = require("../services/services");
 require("dotenv").config();
 
-// Done
+// * Done
 const getCurrentUser = async (req, res, next) => {
   try {
     const { email, name, height, calories, age, bloodType } = req.user;
@@ -18,7 +18,7 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
-// Done
+// * Done
 const logOutAccount = async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -35,7 +35,7 @@ const logOutAccount = async (req, res, next) => {
   }
 };
 
-// Done
+// * Done
 const createAccount = async (req, res, next) => {
   try {
     const { email, password, name } = req.body;
@@ -62,7 +62,7 @@ const createAccount = async (req, res, next) => {
   }
 };
 
-// Done
+// * Done
 const loginAccount = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -84,7 +84,7 @@ const loginAccount = async (req, res, next) => {
   }
 };
 
-// Done
+// * Done
 const updateAccount = async (req, res, next) => {
   try {
     const { accountId } = req.params;
@@ -111,7 +111,24 @@ const updateAccount = async (req, res, next) => {
   }
 };
 
-// Done
+// * Done
+const getIngredients = async (req, res, next) => {
+  try {
+    const result = await services.getIngredients();
+    res.json({
+      status: "Success",
+      code: 201,
+      data: result,
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: error.message,
+      code: 404,
+    });
+  }
+};
+
+// * Done
 const removeAccount = async (req, res, next) => {
   try {
     const { accountId } = req.params;
@@ -163,25 +180,6 @@ const createContacts = async (req, res, next) => {
   }
 };
 
-const updateContacts = async (req, res, next) => {
-  try {
-    ownerId = req.user._id;
-    const { contactId } = req.params;
-    const updateData = req.body;
-    const result = await services.updateContact(contactId, updateData, ownerId);
-    res.status(201).json({
-      status: "Success",
-      code: 201,
-      data: result,
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: error.message,
-      code: 404,
-    });
-  }
-};
-
 const removeContact = async (req, res, next) => {
   try {
     ownerId = req.user._id;
@@ -196,7 +194,7 @@ const removeContact = async (req, res, next) => {
   }
 };
 
-// Done
+// * Done
 const verifyEmail = async (req, res, next) => {
   try {
     const { verificationToken } = req.params;
@@ -214,7 +212,7 @@ const verifyEmail = async (req, res, next) => {
   }
 };
 
-// Done
+// * Done
 const verifyResend = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -244,11 +242,11 @@ module.exports = {
   logOutAccount,
   removeAccount,
   updateAccount,
-  getContacts,
-  createContacts,
-  updateContacts,
-  removeContact,
+  getIngredients,
   getCurrentUser,
   verifyEmail,
   verifyResend,
+  getMeals,
+  createMeals,
+  removeMeal,
 };

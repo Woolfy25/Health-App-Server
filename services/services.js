@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const User = require("./schemas/Users");
 // const Contacts = require("./schemas/Contacts");
 const jwt = require("jsonwebtoken");
@@ -8,7 +9,7 @@ require("dotenv").config();
 const secret = process.env.SECRET;
 const pass = process.env.PASS;
 
-// Done
+// * Done
 const logOutAccount = async (userId) => {
   try {
     const user = await User.findById(userId);
@@ -24,7 +25,7 @@ const logOutAccount = async (userId) => {
   }
 };
 
-// Done
+// * Done
 const createAccount = async ({ email, name, password }) => {
   try {
     const userExistent = await User.findOne({ email });
@@ -82,7 +83,7 @@ const createAccount = async ({ email, name, password }) => {
   }
 };
 
-// Done
+// * Done
 const checkUserDB = async ({ email, password }) => {
   try {
     const user = await User.findOne({ email });
@@ -109,7 +110,7 @@ const checkUserDB = async ({ email, password }) => {
   }
 };
 
-// Done
+// * Done
 const updateAccount = async (accountId, updatedData) => {
   try {
     return await User.findByIdAndUpdate(
@@ -122,7 +123,18 @@ const updateAccount = async (accountId, updatedData) => {
   }
 };
 
-// Done
+// * Done
+const getIngredients = async () => {
+  try {
+    const db = mongoose.connection.db;
+    const collection = db.collection("ingredients");
+    return await collection.find().toArray();
+  } catch (error) {
+    throw error;
+  }
+};
+
+// * Done
 const deleteAccount = async (accountId) => {
   try {
     return User.deleteOne({ _id: accountId });
@@ -155,28 +167,6 @@ const addContact = async ({ name, email, phone, ownerId }) => {
   }
 };
 
-const updateContact = async (contactId, updatedData, ownerId) => {
-  try {
-    update = { ...updatedData };
-    console.log(update);
-    const updatedContact = await Contacts.findOneAndUpdate(
-      { _id: contactId, owner: ownerId },
-      { $set: update },
-      { new: true }
-    );
-
-    if (!updatedContact) {
-      throw new Error(
-        "Contact not found or you don't have permission to update"
-      );
-    }
-
-    return updatedContact;
-  } catch (error) {
-    throw error;
-  }
-};
-
 const deleteContact = async (contactId, ownerId) => {
   try {
     const deletedContact = await Contacts.deleteOne({
@@ -196,7 +186,7 @@ const deleteContact = async (contactId, ownerId) => {
   }
 };
 
-// Done
+// * Done
 const verifyEmailAddress = async (verificationToken) => {
   try {
     const update = { verify: true, verificationToken: null };
@@ -215,6 +205,7 @@ const verifyEmailAddress = async (verificationToken) => {
   }
 };
 
+// * Done
 const verifyEmailResend = async (email) => {
   try {
     const user = await User.findOne({ email });
@@ -256,10 +247,10 @@ module.exports = {
   updateAccount,
   logOutAccount,
   deleteAccount,
-  getAllContacts,
-  addContact,
-  updateContact,
-  deleteContact,
   verifyEmailAddress,
   verifyEmailResend,
+  getIngredients,
+  getAllMeals,
+  addMeals,
+  deleteMeal,
 };
