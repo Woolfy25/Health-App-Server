@@ -14,7 +14,7 @@ const logOutAccount = async (userId) => {
   try {
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(401).json({ message: "Not authorized" });
+      throw new Error("Not Authorized!");
     }
     user.token = null;
     await user.save();

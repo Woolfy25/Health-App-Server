@@ -49,8 +49,7 @@ const createAccount = async (req, res, next) => {
       status: "Success",
       code: 201,
       data: {
-        name: result.name,
-        email: result.email,
+        user: { name: result.name, email: result.email },
         token: result.token,
       },
     });
