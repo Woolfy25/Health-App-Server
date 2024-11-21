@@ -4,11 +4,11 @@ require("dotenv").config();
 // * Done
 const getCurrentUser = async (req, res, next) => {
   try {
-    const { email, name, height, calories, age, bloodType } = req.user;
+    const { _id, email, name, height, calories, age, bloodType } = req.user;
     res.status(200).json({
       status: "Success",
       code: 200,
-      data: { email, name, height, calories, age, bloodType },
+      data: { _id, email, name, height, calories, age, bloodType },
     });
   } catch (error) {
     res.status(404).json({
@@ -73,7 +73,10 @@ const loginAccount = async (req, res, next) => {
     res.status(201).json({
       status: "Success",
       code: 201,
-      data: { name: result.name, email: result.email, token: result.token },
+      data: {
+        user: { name: result.name, email: result.email },
+        token: result.token,
+      },
     });
   } catch (error) {
     res.status(404).json({
