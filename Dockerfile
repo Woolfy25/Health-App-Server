@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:16
 
 WORKDIR /app
 
@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "./src/server.js"]
+CMD ["node", "src/server.js"]
